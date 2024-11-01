@@ -160,6 +160,38 @@ return {
 			},
 		},
 	},
+	{
+		"HiPhish/rainbow-delimiters.nvim",
+		config = function()
+			-- This module contains a number of default definitions
+			local rainbow_delimiters = require("rainbow-delimiters")
+			---@type rainbow_delimiters.config
+			vim.g.rainbow_delimiters = {
+				strategy = {
+					[""] = rainbow_delimiters.strategy["global"],
+					commonlisp = rainbow_delimiters.strategy["local"],
+				},
+				query = {
+					[""] = "rainbow-delimiters",
+					lua = "rainbow-blocks",
+				},
+				priority = {
+					[""] = 110,
+					lua = 210,
+				},
+				highlight = {
+					"RainbowDelimiterRed",
+					"RainbowDelimiterYellow",
+					"RainbowDelimiterBlue",
+					"RainbowDelimiterOrange",
+					"RainbowDelimiterGreen",
+					"RainbowDelimiterViolet",
+					"RainbowDelimiterCyan",
+				},
+				blacklist = { "c", "cpp" },
+			}
+		end,
+	},
 	{ -- Add indentation guides even on blank lines
 		"lukas-reineke/indent-blankline.nvim",
 		-- Enable `lukas-reineke/indent-blankline.nvim`
@@ -190,12 +222,22 @@ return {
 			end)
 
 			vim.g.rainbow_delimiters = { highlight = highlight }
-			require("ibl").setup({
-				scope = { highlight = highlight },
-			})
+			require("ibl").setup({ scope = { highlight = highlight } })
 
 			hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
 		end,
+	},
+	{
+		"rmagatti/auto-session",
+		lazy = false,
+
+		---enables autocomplete for opts
+		---@module "auto-session"
+		---@type AutoSession.Config
+		opts = {
+			suppressed_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+			-- log_level = 'debug',
+		},
 	},
 	{
 		"stevearc/oil.nvim",
@@ -203,12 +245,48 @@ return {
 		---@type oil.SetupOpts
 		opts = {},
 		-- Optional dependencies
-		dependencies = { { "echasnovski/mini.icons", opts = {} } },
-		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+		-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 		config = function()
-			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-			require("oil").setup()
+			vim.keymap.set(
+				"n",
+				"-",
+				'<cmd>lua require("oil").open_float(".")<CR>',
+				{ noremap = true, silent = true, desc = "Open parent directory" }
+			)
+			require("oil").setup({
+				float = {
+					padding = 5,
+				},
+				view_options = {
+					show_hidden = true,
+				},
+			})
 		end,
+	},
+	-- {
+	-- 	"echasnovski/mini.files",
+	-- 	version = "false",
+	-- 	dependencies = { { "echasnovski/mini.icons", opts = {} } },
+	-- 	config = function()
+	-- 		require("mini.files").setup({
+	-- 			mappings = {
+	-- 				go_in = "<Enter>",
+	-- 				go_out = "-",
+	-- 			},
+	-- 		})
+	-- 		vim.keymap.set("n", "-", "<CMD>lua MiniFiles.open()<CR>", { desc = "Open parent directory" })
+	-- 	end,
+	-- },
+	{
+		"nvimdev/dashboard-nvim",
+		event = "VimEnter",
+		config = function()
+			require("dashboard").setup({
+				-- config
+			})
+		end,
+		dependencies = { { "nvim-tree/nvim-web-devicons" } },
 	},
 }
 -- vim: ts=2 sts=2 sw=2 et

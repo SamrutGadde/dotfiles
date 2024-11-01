@@ -37,6 +37,15 @@ return {
 		end,
 	},
 
+	{
+		"rcarriga/nvim-notify",
+		config = function()
+			require("notify").setup({
+				max_width = 40,
+			})
+		end,
+	},
+
 	-- animations
 	{
 		"echasnovski/mini.animate",
