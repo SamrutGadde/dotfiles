@@ -239,45 +239,58 @@ return {
 			-- log_level = 'debug',
 		},
 	},
-	{
-		"stevearc/oil.nvim",
-		---@module 'oil'
-		---@type oil.SetupOpts
-		opts = {},
-		-- Optional dependencies
-		-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
-		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-		config = function()
-			vim.keymap.set(
-				"n",
-				"-",
-				'<cmd>lua require("oil").open_float(".")<CR>',
-				{ noremap = true, silent = true, desc = "Open parent directory" }
-			)
-			require("oil").setup({
-				float = {
-					padding = 5,
-				},
-				view_options = {
-					show_hidden = true,
-				},
-			})
-		end,
-	},
 	-- {
-	-- 	"echasnovski/mini.files",
-	-- 	version = "false",
-	-- 	dependencies = { { "echasnovski/mini.icons", opts = {} } },
+	-- 	"stevearc/oil.nvim",
+	-- 	---@module 'oil'
+	-- 	---@type oil.SetupOpts
+	-- 	opts = {},
+	-- 	-- Optional dependencies
+	-- 	-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+	-- 	dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
 	-- 	config = function()
-	-- 		require("mini.files").setup({
-	-- 			mappings = {
-	-- 				go_in = "<Enter>",
-	-- 				go_out = "-",
+	-- 		vim.keymap.set(
+	-- 			"n",
+	-- 			"-",
+	-- 			'<cmd>lua require("oil").open_float(".")<CR>',
+	-- 			{ noremap = true, silent = true, desc = "Open parent directory" }
+	-- 		)
+	-- 		require("oil").setup({
+	-- 			float = {
+	-- 				padding = 10,
+	-- 			},
+	-- 			view_options = {
+	-- 				show_hidden = true,
+	-- 			},
+	-- 			keymaps = {
+	-- 				["gd"] = {
+	-- 					desc = "Toggle file detail view",
+	-- 					callback = function()
+	-- 						detail = not detail
+	-- 						if detail then
+	-- 							require("oil").set_columns({ "icon", "permissions", "size", "mtime" })
+	-- 						else
+	-- 							require("oil").set_columns({ "icon" })
+	-- 						end
+	-- 					end,
+	-- 				},
 	-- 			},
 	-- 		})
-	-- 		vim.keymap.set("n", "-", "<CMD>lua MiniFiles.open()<CR>", { desc = "Open parent directory" })
 	-- 	end,
 	-- },
+	{
+		"echasnovski/mini.files",
+		version = "false",
+		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
+		config = function()
+			require("mini.files").setup({
+				mappings = {
+					go_in = "<Enter>",
+					go_out = "-",
+				},
+			})
+			vim.keymap.set("n", "-", "<CMD>lua MiniFiles.open()<CR>", { desc = "Open parent directory" })
+		end,
+	},
 	{
 		"nvimdev/dashboard-nvim",
 		event = "VimEnter",
@@ -287,6 +300,14 @@ return {
 			})
 		end,
 		dependencies = { { "nvim-tree/nvim-web-devicons" } },
+	},
+	{
+		"knubie/vim-kitty-navigator",
+		lazy = false,
+		enabled = true,
+		build = {
+			"cp ./*.py ~/.config/kitty/",
+		},
 	},
 }
 -- vim: ts=2 sts=2 sw=2 et
