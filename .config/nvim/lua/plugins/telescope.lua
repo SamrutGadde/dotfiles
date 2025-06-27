@@ -9,7 +9,6 @@ return {
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
-		branch = "0.1.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -56,11 +55,16 @@ return {
 				-- You can put your default mappings / updates / etc. in here
 				--  All the info you're looking for is in `:help telescope.setup()`
 				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
+				defaults = {
+					mappings = {
+						i = { ["<c-enter>"] = "to_fuzzy_refine" },
+					},
+					path_display = {
+						filename_first = {
+							reverse_directories = false,
+						},
+					},
+				},
 				-- pickers = {}
 				extensions = {
 					["ui-select"] = {
@@ -108,6 +112,16 @@ return {
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
+
+			local stackOptions = {
+				prompt_title = "call stack",
+				sort_mru = true,
+				ignore_current_buffer = true,
+			}
+			-- using Lazy to load on the keymap
+			vim.keymap.set("n", "<c-t>", function()
+				builtin.buffers(require("telescope.themes").get_dropdown(stackOptions))
+			end, { desc = "file call-stack" })
 		end,
 	},
 }

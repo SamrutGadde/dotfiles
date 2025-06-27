@@ -56,4 +56,13 @@ vim.keymap.set("n", "<leader>tn", "<Cmd>tabnew<CR>", { desc = "New Tab" })
 vim.keymap.set("n", "<leader>tc", "<Cmd>tabclose<CR>", { desc = "Close Tab" })
 vim.keymap.set("n", "<leader>tb", "<C-w>T", { desc = "Break out into new tab" })
 
+vim.keymap.set("n", "gp", "<C-^>", { desc = "[G]oto [P]revious file " })
+
+vim.api.nvim_create_user_command("Cppath", function()
+	local path = vim.fn.expand("%:p")
+	vim.fn.setreg("+", path)
+	vim.notify('Copied "' .. path .. '" to the clipboard!')
+end, {})
+vim.keymap.set("n", "yp", "<Cmd>Cppath<CR>", { desc = "[Y]ank [P]ath" })
+
 -- vim: ts=2 sts=2 sw=2 et
