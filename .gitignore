@@ -1,3 +1,9 @@
-# vim-kitty-navigator
+# vim-kitty-navigator scripts (copied into kitty config at runtime)
 get_layout.py
 pass_keys.py
+
+# Stow internal directory
+.stow-local-ignore
+
+# Machine-local neovim plugins
+base/.config/nvim/lua/plugins/local.lua
